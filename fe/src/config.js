@@ -1,1 +1,1 @@
-export const API_BASE_URL = "https://ec-be-pearl.vercel.app";
+export const API_BASE_URL = "https://backend-ecommerce-tbhddbpqaq-el.a.run.app";
