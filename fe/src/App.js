@@ -17,13 +17,12 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AddProducts from './pages/AddProducts';
 import ContactUs from './pages/ContactUs';
-import Loggedout from './pages/Loggedout';
 import Payment from './pages/Payment';
 import Orders from './pages/Orders';
 import Slider from './Slider'
 
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from "react-spinners/ClipLoader";
 import Carousel from 'react-multi-carousel';
