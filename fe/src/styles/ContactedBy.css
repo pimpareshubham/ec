@@ -1,0 +1,18 @@
+.contactedby{
+
+    margin-bottom: 1%;
+    margin-top: 1%;
+
+   
+    
+}
+
+.scrollable-content {
+    overflow-y: auto;
+    height: 85vh; /* Adjust the height as needed */
+  }
+
+  .contactedby .card{
+    box-shadow: none;
+    width: 100%;
+  }

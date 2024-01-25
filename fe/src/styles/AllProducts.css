@@ -1,0 +1,10 @@
+.ap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+    width: 100%;
+  
+  }
