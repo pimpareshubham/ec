@@ -201,8 +201,6 @@ router.get('/search/:searchFor', async (req, res) => {
 
 
 
-
-
 router.get('/getfeatured', async (req, res) => {
   try {
 
