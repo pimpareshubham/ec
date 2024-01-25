@@ -82,7 +82,7 @@ const Orders = () => {
                               <img
                                 className="pi3 card-img-top"
                                 style={{ maxWidth: '300px', height: '200px' }}
-                                src={product.productImage}
+                                src={`${API_BASE_URL}` + product.productImage}
                                 alt={`Product ${productIndex + 1}`}
                               />
                             </Link>

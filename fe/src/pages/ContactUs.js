@@ -38,7 +38,7 @@ const ContactUs = () => {
         console.error('Failed to submit form data:', response.statusText);
       }
     } catch (error) {
-      toast('Form data not submitted');
+      taost('Form data not submitted');
       console.error('Error submitting form data:', error.message);
     }
   };

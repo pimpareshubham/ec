@@ -19,13 +19,12 @@ import AddProducts from './pages/AddProducts';
 import ContactUs from './pages/ContactUs';
 import Payment from './pages/Payment';
 import Orders from './pages/Orders';
-import Slider from './Slider'
 
 
-import { ToastContainer } from 'react-toastify';
+
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ClipLoader from "react-spinners/ClipLoader";
-import Carousel from 'react-multi-carousel';
+
 import 'react-multi-carousel/lib/styles.css';
 
 
@@ -37,7 +36,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import AllProducts from './pages/AllProducts';
@@ -62,7 +61,7 @@ function App() {
 
   function DynamicRouting() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+   
 
     const user = useSelector(state => state.userReducer);
     

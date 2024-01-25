@@ -76,12 +76,8 @@ router.post('/addproduct', protectedResource, upload.single('productImage'), asy
     res.status(500).json({ message: 'An error occurred while adding the product' });
   }
 });
-
-
-
-
-
 router.post('/addfeatured', protectedResource, upload.single('productImage'), async (req, res) => {
+  console.log('inside route');
   const { productName, productPrice, productDescription } = req.body;
 
   if (!productName || !productPrice || !productDescription) {
@@ -89,19 +85,46 @@ router.post('/addfeatured', protectedResource, upload.single('productImage'), as
     return res.status(400).json({ message: 'One or more fields are empty' });
   }
 
-  try {
-    const imageLocation = `/uploads/${req.file.filename}`; // Construct the URL
-    const productObj = new FeaturedProductModel({
-      productName,
-      productPrice,
-      productDescription,
-      productImage: imageLocation, // Store the URL in the productImage field
-      cartQuantity: 1
-    });
+  const file = req.file;
 
-    const newProduct = await productObj.save();
-    console.log('Product added');
-    res.status(201).json({ product: newProduct });
+  if (!file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  try {
+    const filePath = path.join(uploadDir, file.filename);
+
+    // Upload the file to Google Cloud Storage
+    const remoteFileName = `${Date.now()}_${file.originalname}`;
+    const remoteFile = bucket.file(remoteFileName);
+
+    console.log('after file upload gc');
+
+    fs.createReadStream(filePath)
+      .pipe(remoteFile.createWriteStream())
+      .on('error', (err) => {
+        console.error(err);
+        return res.status(500).json({ message: 'Error uploading file. Please try again.' });
+      })
+      .on('finish', async () => {
+        // Delete the local file after successful upload
+        fs.unlinkSync(filePath);
+
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${remoteFileName}`;
+
+        // Save product information to the database
+        const productObj = new FeaturedProductModel({
+          productName,
+          productPrice,
+          productDescription,
+          productImage: publicUrl,
+          cartQuantity: 1,
+        });
+
+        const newProduct = await productObj.save();
+        console.log('Product added');
+        res.status(201).json({ product: newProduct });
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'An error occurred while adding the product' });
@@ -110,15 +133,47 @@ router.post('/addfeatured', protectedResource, upload.single('productImage'), as
 
 
 
+
+
+// router.post('/addfeatured', protectedResource, upload.single('productImage'), async (req, res) => {
+//   const { productName, productPrice, productDescription } = req.body;
+
+//   if (!productName || !productPrice || !productDescription) {
+//     console.log('Missing fields');
+//     return res.status(400).json({ message: 'One or more fields are empty' });
+//   }
+
+//   try {
+//     const imageLocation = `/uploads/${req.file.filename}`; // Construct the URL
+//     const productObj = new FeaturedProductModel({
+//       productName,
+//       productPrice,
+//       productDescription,
+//       productImage: imageLocation, // Store the URL in the productImage field
+//       cartQuantity: 1
+//     });
+
+//     const newProduct = await productObj.save();
+//     console.log('Product added');
+//     res.status(201).json({ product: newProduct });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'An error occurred while adding the product' });
+//   }
+// });
+
+
+
 router.get('/search/:searchFor', async (req, res) => {
   try {
-    const { searchFor } = req.params; // Remove the redundant req.params.searchFor;
+    const { searchFor } = req.params;
+    const searchLowerCase = searchFor.toLowerCase();
 
-    // Construct a MongoDB query filter
+    // Perform a case-insensitive search using the $regex operator
     const filter = {
       $or: [
-        { productName: { $regex: new RegExp(searchFor, 'i') } }, // Case-insensitive regex for product name
-        { productDescription: { $regex: new RegExp(searchFor, 'i') } },  // Case-insensitive regex for description
+        { 'productName': { $regex: new RegExp(searchLowerCase, 'i') } },
+        { 'productDescription': { $regex: new RegExp(searchLowerCase, 'i') } },
       ],
     };
 
@@ -127,11 +182,9 @@ router.get('/search/:searchFor', async (req, res) => {
 
     console.log(searchResult);
 
-    if (searchResult.length == 0) {
-
-      return res.status(404).json({ success: "false" })
+    if (searchResult.length === 0) {
+      return res.status(404).json({ success: false });
     }
-
 
     // Send the search result as a response
     return res.json({ success: true, result: searchResult });
@@ -142,6 +195,8 @@ router.get('/search/:searchFor', async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
+
 
 
 
@@ -269,12 +324,6 @@ router.post('/addreview', async (req, res) => {
     res.status(500).json({ message: 'An error occurred during adding product review' });
   }
 });
-
-
-module.exports = router;
-
-
-
 
 
 
@@ -740,23 +789,57 @@ router.delete('/removeproduct/:productName', async (req, res) => {
     return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
-
-
-router.delete('/removefproduct/:productName', protectedResource, async (req, res) => { // Modify the route parameter to accept productName
+router.delete('/removefproduct/:productName', async (req, res) => {
   try {
     const productName = req.params.productName;
 
-    const product = await FeaturedProductModel.findOneAndDelete({ productName });
+    // Find the product to get the productImage URL
+    const product = await FeaturedProductModel.findOne({ productName });
 
-    console.log("Product Removed")
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    // Delete the product from MongoDB
+    await FeaturedProductModel.findOneAndDelete({ productName });
+
+    console.log('Product Removed');
+
+    // Check if the product has an associated image
+    if (product.productImage) {
+      // Extract the file name from the productImage URL
+      const fileName = product.productImage.replace(`https://storage.googleapis.com/${bucket.name}/`, '');
+
+      // Delete the file from Google Cloud Storage
+      await bucket.file(fileName).delete();
+
+      console.log('File Removed from Google Cloud Storage');
+    }
 
     return res.json({ success: true, message: 'Product removed successfully.' });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     // Handle any errors here
     return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
+
+
+// router.delete('/removefproduct/:productName', protectedResource, async (req, res) => { // Modify the route parameter to accept productName
+//   try {
+//     const productName = req.params.productName;
+
+//     const product = await FeaturedProductModel.findOneAndDelete({ productName });
+
+//     console.log("Product Removed")
+
+//     return res.json({ success: true, message: 'Product removed successfully.' });
+//   } catch (error) {
+//     console.log(error);
+//     // Handle any errors here
+//     return res.status(500).json({ success: false, message: 'Internal Server Error' });
+//   }
+// });
 
 
 router.post('/contactus', async (req, res) => {
@@ -800,13 +883,6 @@ router.get('/contactus', async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
-
-module.exports = router;
-
-
-
-module.exports = router;
-
 
 
 module.exports = router;

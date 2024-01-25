@@ -104,7 +104,7 @@ const Cart = () => {
                                         <div className="row" key={index}>
                                             <div className="col-md-auto">
                                                 <div className="card cartnb cart-cards cart-image d-block" style={{ width: '18rem' }}>
-                                                    <img src={item.productImage} alt={`Product ${index + 1}`} style={{ maxWidth: '100%', height: 'auto' }} />
+                                                    <img src={`${API_BASE_URL}`+ item.productImage} alt={`Product ${index + 1}`} style={{ maxWidth: '100%', height: 'auto' }} />
                                                 </div>
                                             </div>
                                             <div className="col-md-auto">
