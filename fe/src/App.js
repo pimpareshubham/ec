@@ -36,7 +36,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 
-import { useNavigate } from 'react-router-dom';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import AllProducts from './pages/AllProducts';
