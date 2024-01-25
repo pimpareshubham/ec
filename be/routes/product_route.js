@@ -164,37 +164,37 @@ router.post('/addfeatured', protectedResource, upload.single('productImage'), as
 
 
 
-// router.get('/search/:searchFor', async (req, res) => {
-//   try {
-//     const { searchFor } = req.params;
-//     const searchLowerCase = searchFor.toLowerCase();
+router.get('/search/:searchFor', async (req, res) => {
+  try {
+    const { searchFor } = req.params;
+    const searchLowerCase = searchFor.toLowerCase();
 
-//     // Perform a case-insensitive search using the $regex operator
-//     const filter = {
-//       $or: [
-//         { 'productName': { $regex: new RegExp(searchLowerCase, 'i') } },
-//         { 'productDescription': { $regex: new RegExp(searchLowerCase, 'i') } },
-//       ],
-//     };
+    // Perform a case-insensitive search using the $regex operator
+    const filter = {
+      $or: [
+        { 'productName': { $regex: new RegExp(searchLowerCase, 'i') } },
+        { 'productDescription': { $regex: new RegExp(searchLowerCase, 'i') } },
+      ],
+    };
 
-//     // Perform the search using ProductModel.find() with the constructed filter
-//     const searchResult = await ProductModel.find(filter);
+    // Perform the search using ProductModel.find() with the constructed filter
+    const searchResult = await ProductModel.find(filter);
 
-//     console.log(searchResult);
+    console.log(searchResult);
 
-//     if (searchResult.length === 0) {
-//       return res.status(404).json({ success: false });
-//     }
+    if (searchResult.length === 0) {
+      return res.status(404).json({ success: false });
+    }
 
-//     // Send the search result as a response
-//     return res.json({ success: true, result: searchResult });
+    // Send the search result as a response
+    return res.json({ success: true, result: searchResult });
 
-//   } catch (error) {
-//     // Handle errors
-//     console.error(error);
-//     res.status(500).json({ success: false, error: 'Internal Server Error' });
-//   }
-// });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 
 
