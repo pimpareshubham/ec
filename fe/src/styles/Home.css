@@ -63,6 +63,7 @@
     height: 20vh;
     width: 20vw;
     margin-top: 10px;
+    background-repeat: no-repeat;
   }
 
 
@@ -117,6 +118,7 @@
   background-image: url(../img/bg5.jpg);
   background-size: 100%;
   display: flex;
+  background-repeat: no-repeat;
   color: yellow;
   align-items: center;
   margin-top: 0;
@@ -174,6 +176,7 @@
 
   .cover-image {
     height: 80vh;
+    background-repeat: no-repeat;
     width: auto;
     background-position: center;
     background-image: url(../img/bg5.jpg);
@@ -297,6 +300,7 @@ a:link {
   .cover-image {
     height: 60vh;
     width: auto;
+    background-repeat: no-repeat;
     background-color: aqua;
     background-image: url(../img/bg5.jpg);
     background-size: 100%;
@@ -327,6 +331,7 @@ a:link {
     height: 60vh;
     width: auto;
     background-color: aqua;
+    background-repeat: no-repeat;
     background-image: url(../img/bg5.jpg);
     background-size: 100%;
     display: flex;
