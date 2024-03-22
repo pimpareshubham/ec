@@ -82,21 +82,6 @@
 
 
 
-  .e-tl {
-    margin-top: 5.5rem;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.113);
-    border-radius: 0 10px 0 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: absolute;
-    font-size: 0.8rem;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    box-shadow: 15px 15px 20px 15px rgba(0, 0, 0, 0.4);
-
-  }
-
-
 }
 
 
@@ -158,18 +143,6 @@
     margin-bottom: 5%;
   }
 
-  .e-tl {
-    margin-top: 190px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.113);
-    border-radius: 0 10px 0 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: absolute;
-    font-size: 1rem;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    box-shadow: 15px 15px 20px 25px rgba(0, 0, 0, 0.4);
-  }
 
 
   .cover-image {
@@ -281,18 +254,7 @@ a:link {
   }
 
 
-  .e-tl {
-    margin-top: 130px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.113);
-    border-radius: 0 10px 0 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: absolute;
-    font-size: 1rem;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    box-shadow: 15px 15px 20px 25px rgba(0, 0, 0, 0.4);
-  }
+
 
   .cover-image {
     height: 60vh;
@@ -350,18 +312,7 @@ a:link {
     transition: box-shadow 0.5s ease;
   }
 
-  .e-tl {
-    margin-top: 130px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.113);
-    border-radius: 0 10px 0 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    position: absolute;
-    font-size: 1rem;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    box-shadow: 15px 15px 20px 25px rgba(0, 0, 0, 0.4);
-  }
+
 
  
 }
