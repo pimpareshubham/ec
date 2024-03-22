@@ -8,9 +8,7 @@ const HomeCover = () => {
 
                 <h1 className="e-l">Ecommerce</h1>
 
-                <div className="e-tl">
-                    Clothes that talk on behalf of you. Something for every occasion
-                </div>
+
             </div>
         </>
     )
